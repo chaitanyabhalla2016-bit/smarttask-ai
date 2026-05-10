@@ -13,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 mongoose.connect(MONGO_URI).then(()=>console.log('Mongoose connected')).catch((err)=>console.log(err));
 
+// Routes
 app.use(routes);
 
 app.listen(PORT,()=>{
