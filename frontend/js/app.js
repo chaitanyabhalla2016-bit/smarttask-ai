@@ -1,5 +1,5 @@
-import config from './config.js';
-const BASE_URL = config.BASE_URL;
+import CONFIG from './config.js';
+const BASE_URL = CONFIG.BASE_URL;
 const taskContainer = document.querySelector('#task-container');
 const taskInput = document.querySelector('#task-input');
 const addTaskBtn = document.querySelector('#add-task-btn');
