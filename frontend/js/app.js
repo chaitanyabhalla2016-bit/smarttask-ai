@@ -9,21 +9,22 @@ let isEditing = false;
 async function getData(){
     taskContainer.innerHTML = "";
     taskContainer.innerHTML = `
-        <div class="alert alert-info">
-            Loading tasks...
-        </div>
+    <div class="alert alert-info">
+    Loading tasks...
+    </div>
     `;
     const response = await fetch(`${BASE_URL}/tasks`);
     const data = await response.json();
     if (data.length === 0) {
         taskContainer.innerHTML = `
-            <div class="alert alert-secondary">
-                "No tasks yet. Add your first task 🚀"
-            </div>
+        <div class="alert alert-secondary">
+        "No tasks yet. Add your first task 🚀"
+        </div>
         `;
         return;
     }
     console.log(data);
+    taskContainer.innerHTML = "";
     data.forEach(task => {
         taskContainer.innerHTML += `
         <div class="card mb-3 p-3">
@@ -61,7 +62,7 @@ addTaskBtn.addEventListener("click",async () => {
     }
     if(isEditing){
         try{
-            const response = await fetch(`http://localhost:5000/tasks/${editingTaskId}`,{
+            const response = await fetch(`${BASE_URL}/tasks/${editingTaskId}`,{
                 method: "PUT",
                 headers:{
                     "Content-Type":"application/json",
@@ -113,7 +114,7 @@ addTaskBtn.addEventListener("click",async () => {
 taskContainer.addEventListener('click',async (event) => {
     if(event.target.classList.contains("delete-btn")){
         const taskId = event.target.dataset.id;
-        await fetch(`http://localhost:5000/tasks/${taskId}`, {
+        await fetch(`${BASE_URL}/tasks/${taskId}`, {
             method: "DELETE"
         });
         getData();

@@ -10,8 +10,8 @@ const{
 router.get('/tasks',getTasks);
 router.post('/tasks',createTasks);
 // Delete backend route
-router.delete('/tasks/:id',updateTask);
+router.delete('/tasks/:id',deleteTask);
 // Update route
-router.put('/tasks/:id',deleteTask);
+router.put('/tasks/:id',updateTask);
 
 module.exports = router;
