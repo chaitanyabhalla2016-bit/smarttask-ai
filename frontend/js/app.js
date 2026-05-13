@@ -1,3 +1,5 @@
+import config from './config.js';
+const BASE_URL = config.BASE_URL;
 const taskContainer = document.querySelector('#task-container');
 const taskInput = document.querySelector('#task-input');
 const addTaskBtn = document.querySelector('#add-task-btn');
@@ -6,8 +8,21 @@ let isEditing = false;
 
 async function getData(){
     taskContainer.innerHTML = "";
-    const response = await fetch("http://localhost:5000/tasks");
+    taskContainer.innerHTML = `
+        <div class="alert alert-info">
+            Loading tasks...
+        </div>
+    `;
+    const response = await fetch(`${BASE_URL}/tasks`);
     const data = await response.json();
+    if (data.length === 0) {
+        taskContainer.innerHTML = `
+            <div class="alert alert-secondary">
+                "No tasks yet. Add your first task 🚀"
+            </div>
+        `;
+        return;
+    }
     console.log(data);
     data.forEach(task => {
         taskContainer.innerHTML += `
@@ -71,7 +86,7 @@ addTaskBtn.addEventListener("click",async () => {
         }
     }else{
         try{
-            const addTaskResponse = await fetch("http://localhost:5000/tasks",{
+            const addTaskResponse = await fetch(`${BASE_URL}/tasks`,{
                 method: "POST",
                 headers: {
                     "content-type":"application/json"

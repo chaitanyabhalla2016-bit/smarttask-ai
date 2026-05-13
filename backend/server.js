@@ -5,7 +5,12 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const routes = require('./routes/taskRoutes');
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: [
+        "http://localhost:5000/",
+        "127.0.0.1:5500"
+    ]
+}));
 app.use(express.json());
 
 const MONGO_URI = process.env.MONGO_URI;
