@@ -2,6 +2,7 @@ import CONFIG from './config.js';
 const BASE_URL = CONFIG.BASE_URL;
 const taskContainer = document.querySelector('#task-container');
 const taskInput = document.querySelector('#task-input');
+const taskStatus = document.querySelector('#task-status');
 const addTaskBtn = document.querySelector('#add-task-btn');
 let editingTaskId = null;
 let isEditing = false;
@@ -27,16 +28,26 @@ async function getData(){
     taskContainer.innerHTML = "";
     data.forEach(task => {
         taskContainer.innerHTML += `
-        <div class="card mb-3 p-3">
+        <div class="card mb-3 px-2 py-1">
             <div class="d-flex justify-content-between align-items-center">
-                <p class="m-0">${task.title}</p>
+                <p class="${task.completed ? 'text-decoration-line-through text-muted' : ''} m-0">
+                    ${task.title}
+                </p>
                 <div>
                     <button
-                    class="btn btn-warning edit-btn me-2"
-                    data-id="${task._id}"
-                    data-title="${task.title}"
+                        class="btn btn-info completed-toggle-btn me-2"
+                        data-id="${task._id}"
+                        data-title="${task.title}"
+                        data-completed="${task.completed}"
                     >
-                    Edit
+                        ${task.completed?"Undo":"Mark Done"}
+                    </button>
+                    <button
+                        class="btn btn-warning edit-btn me-2"
+                        data-id="${task._id}"
+                        data-title="${task.title}"
+                    >
+                        Edit
                     </button>
 
                     <button
@@ -117,12 +128,12 @@ taskContainer.addEventListener('click',async (event) => {
         await fetch(`${BASE_URL}/tasks/${taskId}`, {
             method: "DELETE"
         });
-        getData();
+        await getData();
     }
 });
 
 // Updating/Editing a task
-taskContainer.addEventListener('click',async (event) => {
+taskContainer.addEventListener('click', async (event) => {
     if(event.target.classList.contains("edit-btn")){
         editingTaskId = event.target.dataset.id;
         const existingTaskContent = event.target.dataset.title;
@@ -130,4 +141,24 @@ taskContainer.addEventListener('click',async (event) => {
         taskInput.value = existingTaskContent;
         isEditing = true;
     }
+    if (event.target.classList.contains("completed-toggle-btn")) {
+        try {
+            editingTaskId = event.target.dataset.id;
+            const toggleStatusResponse = await fetch(`${BASE_URL}/tasks/${editingTaskId}/toggle-status`, {
+                method: "PATCH"
+            });
+            if (!toggleStatusResponse.ok) {
+                alert("Toggle status not ok. Please check the console!");
+                const errorData = await toggleStatusResponse.json();
+                console.log(errorData.errorMessage);
+                return;
+            }
+            await getData();
+            console.log('Task Status changed');
+        } catch (error) {
+            alert('Please check console for error');
+            console.log(error);
+        }
+    }
+    
 });

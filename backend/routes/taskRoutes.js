@@ -4,7 +4,8 @@ const{
     getTasks,
     createTasks,
     updateTask,
-    deleteTask
+    deleteTask,
+    toggleTaskStatus
 } = require('../controllers/taskController');
 
 router.get('/tasks',getTasks);
@@ -13,5 +14,6 @@ router.post('/tasks',createTasks);
 router.delete('/tasks/:id',deleteTask);
 // Update route
 router.put('/tasks/:id',updateTask);
+router.patch('/tasks/:id/toggle-status',toggleTaskStatus);
 
 module.exports = router;

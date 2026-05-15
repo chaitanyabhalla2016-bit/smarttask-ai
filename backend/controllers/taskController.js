@@ -44,6 +44,22 @@ const updateTask = async (req,res) => {
     }
 }
 
+const toggleTaskStatus = async (req, res) => {
+    try {
+        const selectedId = req.params.id;
+        const foundTask = await Task.findById(selectedId);
+        if (!foundTask) {
+            return res.status(404).json({errorMessage:"Task not found in the database!"})
+        }
+        foundTask.completed = !foundTask.completed;
+        await foundTask.save();
+        res.status(200).json({ successMessage: "Task Status changed successfully!" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ errorMessage: "Unable to change task status from backend." });
+    }
+}
+
 const deleteTask = async (req,res)=>{
     try{
         const selectedId = req.params.id;
@@ -63,5 +79,6 @@ module.exports = {
     getTasks,
     createTasks,
     updateTask,
-    deleteTask
+    deleteTask,
+    toggleTaskStatus
 }
