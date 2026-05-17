@@ -1,0 +1,16 @@
+#statusFilterCircle{
+    height: 15px;
+    width: 15px;
+    display: inline-block;;
+    border-radius: 100%;
+}
+.active-filter{
+    border-bottom-width: 2.5px;
+    border-bottom-color: rgb(var(--bs-info-rgb));
+    box-shadow: 0 2px 5px 1px rgb(var(--bs-primary-rgb));
+    transform: translateY(-5px);
+    transition: all 0.2s ease;
+}
+.custom-start-25{
+    left: 25%;
+}

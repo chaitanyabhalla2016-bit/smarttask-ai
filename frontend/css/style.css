@@ -11,3 +11,6 @@
     transform: translateY(-5px);
     transition: all 0.2s ease;
 }
+.custom-start-25{
+    left: 25%;
+}
